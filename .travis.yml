@@ -1,16 +1,9 @@
 language: ruby
 rvm:
-  - 1.9.3
-  - 2.0
-  - 2.1
-  - 2.2
+  - 2.5.1
   - ruby-head
-  - rbx-2
-  - jruby-19mode
-  - jruby-head
 matrix:
   # allow failures for head builds
   allow_failures:
     - rvm: ruby-head
-    - rvm: jruby-head
   fast_finish: true
