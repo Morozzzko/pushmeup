@@ -17,10 +17,10 @@ module APNS
     end
 
     def packaged_notification
-      self.packaged_token.flat_map do |pt|
+      self.packaged_token.map do |pt|
         pm = self.packaged_message
         [0, 0, 32, pt, 0, pm.bytesize, pm].pack("ccca*cca*")
-      end
+      end.join('')
     end
 
     def packaged_token
