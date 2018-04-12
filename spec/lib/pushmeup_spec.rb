@@ -14,6 +14,16 @@ describe Pushmeup do
     end
 
     describe "Notifications" do
+      context "device_tokens as array" do
+        let(:tokens) { ["123", "234", "345", "456"]}
+        let(:notification) { APNS::Notification.new(tokens, {:alert => "hi"}) }
+        let(:single_notification) { APNS::Notification.new(tokens.first, {:alert => "hi"})}
+
+        it "serializes notification" do
+          expect { notification.packaged_notification }.not_to raise_exception
+          expect(single_notification.packaged_notification.length).to eql(notification.packaged_notification.length / tokens.length)
+        end
+      end
 
       describe "#==" do
 

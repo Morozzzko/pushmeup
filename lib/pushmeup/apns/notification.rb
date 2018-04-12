@@ -17,13 +17,24 @@ module APNS
     end
 
     def packaged_notification
-      pt = self.packaged_token
-      pm = self.packaged_message
-      [0, 0, 32, pt, 0, pm.bytesize, pm].pack("ccca*cca*")
+      self.packaged_token.flat_map do |pt|
+        pm = self.packaged_message
+        [0, 0, 32, pt, 0, pm.bytesize, pm].pack("ccca*cca*")
+      end
     end
 
     def packaged_token
-      [device_token.gsub(/[\s|<|>]/,'')].pack('H*')
+      tokens =
+        case device_token
+        when Array
+          device_token
+        else
+          [device_token]
+        end
+
+      tokens.map do |token|
+        [token.gsub(/[\s|<|>]/,'')].pack('H*')
+      end
     end
 
     def packaged_message
